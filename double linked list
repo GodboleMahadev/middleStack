@@ -1,0 +1,170 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ */
+package specialstack;
+
+/**
+ *
+ * @author godbo
+ */
+class Node{
+    int data;
+    Node next=null;
+    Node prev=null;
+    Node(int data){
+        this.data=data;
+    }
+}
+class MiddleStack{
+    Node top;
+    Node middle;
+    int count;
+    boolean isEmpty(){
+        if(this.top==null) return true;
+        else return false;
+    }
+   
+    public void push(int data){
+        Node temp=new Node(data);
+        if(top==null){
+            top=temp;
+            count++;
+            middle=top;
+        }
+        // 1 3 4 5
+        else{
+            temp.next=top;
+            temp.prev=null;
+            top.prev=temp;
+            top=temp;
+            if(count%2!=0){
+                middle=middle.prev;
+            } 
+            count++;
+        }
+        
+    }
+    
+    public int  pop(){
+        if(top==null) return -1;
+        int d=top.data;
+        if(top.next==null){
+            top=null;
+            middle=null;
+            return d;
+        }
+        top=top.next;
+        top.prev=null;
+        // 1 2 3 4
+        if(count%2==0){
+            middle=middle.next;
+        }
+        count--;
+        return d;
+    }
+    
+    public int getMiddle(){
+        if(middle==null) return -1;
+        return middle.data;
+    }
+    
+    public int deleteMiddle(){
+        if(middle==null) return -1;
+        int d=middle.data;
+        //1 2 3 4 5 
+    
+        Node temp=middle;
+        if(middle==top){
+            if(top.next==null){
+                top=null;
+                middle=null;
+             
+            }
+            else{
+                top=top.next;
+                top.prev=null;
+                middle=top;
+            }
+            count--;
+            return d;
+        }
+        if(middle.prev!=null) middle.prev.next=middle.next;
+        if(middle.next!=null)  middle.next.prev=middle.prev;
+        if(count%2==0){  
+            middle=temp.next;
+        }else{
+           middle=temp.prev;
+        }
+        count--;
+        return d;
+    }
+    
+    public void display(){
+        Node p=this.top;
+        while(p!=null){
+            System.out.print(p.data+" ");
+            p=p.next;
+        }
+        System.out.println();
+    }
+    void mDisplay(){
+        this.display();
+        System.out.println("middle element "+this.middle.data);
+    }
+}
+public class SpecialStack {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        // TODO code application logic here
+        MiddleStack ms=new MiddleStack();
+//        ms.push(10);
+//        ms.push(48);
+//        ms.push(50);
+//        System.out.println(ms.deleteMiddle());
+//        System.out.println(ms.getMiddle());
+//        ms.push(59);
+//        ms.push(0);
+//        ms.push(300);
+//      
+//        System.out.println(ms.getMiddle());
+//        ms.display();
+//          ms.deleteMiddle();
+//        System.out.println(ms.getMiddle());
+////        ms.pop();
+////        System.out.println(ms.getMiddle());
+////        System.out.println(ms.pop());
+////        System.out.println(ms.getMiddle());
+////        ms.pop();
+////        System.out.println(ms.getMiddle());
+////        System.out.println(ms.pop());
+////        
+//        
+//       
+//        ms.display();
+        
+         ms.push(11);
+        ms.push(22);
+        ms.push(33);
+        ms.push(44);
+        ms.push(55);
+        ms.push(66);
+        ms.push(77);
+        ms.push(99);
+        ms.push(88);
+        ms.display();
+        System.out.println("Item popped is " + ms.pop());
+        ms.mDisplay();
+        System.out.println("Item popped is " + ms.pop());
+        ms.mDisplay();
+        System.out.println("Middle Element is "
+                           + ms.getMiddle());
+        ms.deleteMiddle();
+        System.out.println("The updated middle Element is "
+                           + ms.getMiddle());
+    }
+    
+}
